@@ -10,13 +10,12 @@ import java.util.TimerTask;
 public class Online_Exam_System {
     public static void main(String[] args) {
         try {
-            Login_Part Login_Section = new Login_Part();
-            Login_Section.setSize(400, 180);
-            Login_Section.setVisible(true);
-            Login_Section.setLocation(400, 300);
+            Login_Part SignIn_Section = new Login_Part();
+            SignIn_Section.setSize(400, 180);
+            SignIn_Section.setVisible(true);
+            SignIn_Section.setLocation(400, 300);
 
         } catch (Exception e) {
-            // TODO: handle exception
             JOptionPane.showMessageDialog(null, e.getMessage(), "System Error", 0);
         }
     }
@@ -24,28 +23,28 @@ public class Online_Exam_System {
 
 class Login_Part extends JFrame implements ActionListener {
     JButton Submission_Button;
-    JPanel Login_Panel;
+    JPanel AreaLogin;
     JLabel User_Name, Password;
     JTextField User_Name_TextField, Password_TextField;
 
     Login_Part() {
         User_Name = new JLabel();
-        User_Name.setText("Enter Your UserName :");
+        User_Name.setText("Enter Your Name :");
         User_Name_TextField = new JTextField(15);
         Password = new JLabel();
-        Password.setText("Enter Password :");
+        Password.setText("Enter Password (Default 12345):");
         Password_TextField = new JPasswordField(10);
-        Submission_Button = new JButton("Login Now");
+        Submission_Button = new JButton("Start Exam");
         Submission_Button.setBounds(150, 100, 50, 80);
-        Login_Panel = new JPanel(new GridLayout(3, 1));
-        Login_Panel.add(User_Name);
-        Login_Panel.add(User_Name_TextField);
-        Login_Panel.add(Password);
-        Login_Panel.add(Password_TextField);
-        Login_Panel.add(Submission_Button);
-        add(Login_Panel, BorderLayout.CENTER);
+        AreaLogin = new JPanel(new GridLayout(3, 1));
+        AreaLogin.add(User_Name);
+        AreaLogin.add(User_Name_TextField);
+        AreaLogin.add(Password);
+        AreaLogin.add(Password_TextField);
+        AreaLogin.add(Submission_Button);
+        add(AreaLogin, BorderLayout.CENTER);
         Submission_Button.addActionListener(this);
-        setTitle("Login Details");
+        setTitle("Player Details");
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -61,39 +60,39 @@ class Login_Part extends JFrame implements ActionListener {
 }
 
 class Begin_Online_Test extends JFrame implements ActionListener {
-    JLabel Time_Section, Question_Section;
-    JRadioButton Collection_Button[] = new JRadioButton[6];
+    JLabel Time_Section, Question_Choice;
+    JRadioButton Answer_Choice[] = new JRadioButton[6];
     JButton Save_Next, Review_Later;
     ButtonGroup Button_Group;
-    int Correct_Answer = 0, Current_Question = 0, x_coord = 1, y_coord = 1, Now = 0;
+    int Correct_Answer = 0, Present_Question = 0, x_coord = 1, y_coord = 1, Now = 0;
     int Review_Array[] = new int[10];
     Timer Ticker = new Timer();
 
     Begin_Online_Test(String User_Name) {
         super(User_Name);
         Time_Section = new JLabel();
-        Question_Section = new JLabel();
+        Question_Choice = new JLabel();
         add(Time_Section);
-        add(Question_Section);
+        add(Question_Choice);
         Button_Group = new ButtonGroup();
         for (int Button_No = 1; Button_No <= 4; Button_No++) {
-            Collection_Button[Button_No] = new JRadioButton();
-            add(Collection_Button[Button_No]);
-            Button_Group.add(Collection_Button[Button_No]);
+            Answer_Choice[Button_No] = new JRadioButton();
+            add(Answer_Choice[Button_No]);
+            Button_Group.add(Answer_Choice[Button_No]);
         }
-        Save_Next = new JButton("Save and Next Qn");
-        Review_Later = new JButton("Review Question Later");
+        Save_Next = new JButton("Save and Next ");
+        Review_Later = new JButton("Review Later");
         Save_Next.addActionListener(this);
         Review_Later.addActionListener(this);
         add(Save_Next);
         add(Review_Later);
         Assign_Questions();
-        Question_Section.setBounds(30, 40, 450, 20);
+        Question_Choice.setBounds(30, 40, 450, 20);
         Time_Section.setBounds(20, 20, 450, 20);
-        Collection_Button[1].setBounds(50, 80, 100, 20);
-        Collection_Button[2].setBounds(50, 110, 100, 20);
-        Collection_Button[3].setBounds(50, 140, 100, 20);
-        Collection_Button[4].setBounds(50, 170, 100, 20);
+        Answer_Choice[1].setBounds(50, 80, 300, 20);
+        Answer_Choice[2].setBounds(50, 110, 300, 20);
+        Answer_Choice[3].setBounds(50, 140, 300, 20);
+        Answer_Choice[4].setBounds(50, 170, 300, 20);
         Save_Next.setBounds(95, 240, 140, 30);
         Review_Later.setBounds(270, 240, 150, 30);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,11 +120,11 @@ class Begin_Online_Test extends JFrame implements ActionListener {
             if (Authenticate_Answer()) {
                 Correct_Answer = Correct_Answer + 1;
             }
-            Current_Question = Current_Question + 1;
+            Present_Question = Present_Question + 1;
             Assign_Questions();
-            if (Current_Question == 9) {
+            if (Present_Question == 9) {
                 Save_Next.setEnabled(false);
-                Review_Later.setText("Get Result");
+                Review_Later.setText("See Result");
             }
         }
         if (event.getActionCommand().equals("Review Question Later")) {
@@ -133,12 +132,12 @@ class Begin_Online_Test extends JFrame implements ActionListener {
             Review.setBounds(480, 20 + (30 * x_coord), 100, 30);
             add(Review);
             Review.addActionListener(this);
-            Review_Array[x_coord] = Current_Question;
+            Review_Array[x_coord] = Present_Question;
             x_coord = x_coord + 1;
-            Current_Question = Current_Question + 1;
+            Present_Question = Present_Question + 1;
             Assign_Questions();
-            if (Current_Question == 9) {
-                Review_Later.setText("Get Result");
+            if (Present_Question == 9) {
+                Review_Later.setText("See Result");
             }
             setVisible(false);
             setVisible(true);
@@ -149,131 +148,132 @@ class Begin_Online_Test extends JFrame implements ActionListener {
                 if (Authenticate_Answer()) {
                     Correct_Answer = Correct_Answer + 1;
                 }
-                Now = Current_Question;
-                Current_Question = Review_Array[y_coord];
+                Now = Present_Question;
+                Present_Question = Review_Array[y_coord];
                 Assign_Questions();
                 ((JButton) event.getSource()).setEnabled(false);
-                Current_Question = Now;
+                Present_Question = Now;
             }
         }
 
-        if (event.getActionCommand().equals("Get Result")) {
+        if (event.getActionCommand().equals("See Result")) {
             if (Authenticate_Answer()) {
                 Correct_Answer = Correct_Answer + 1;
             }
-            Current_Question = Current_Question + 1;
-            JOptionPane.showMessageDialog(this, "You Total No of Correct Answers are :" + Correct_Answer);
+            Present_Question = Present_Question + 1;
+            JOptionPane.showMessageDialog(this, "Total Correct Answers are :" + Correct_Answer);
             System.exit(0);
         }
     }
 
     private void Assign_Questions() {
-        Collection_Button[4].setSelected(true);
-        switch (Current_Question) {
+        Answer_Choice[4].setSelected(true);
+        switch (Present_Question) {
             case 0:
-                Question_Section.setText("Qn 1: Who is Father of JAVA Programming Language :");
-                Collection_Button[1].setText("Charles Babbage");
-                Collection_Button[2].setText("James Gosling");
-                Collection_Button[3].setText("M.P. JAVA");
-                Collection_Button[4].setText("Priyanka Shinde");
+                Question_Choice.setText("Qn 1: Who is the First Prime Minister of India :");
+                Answer_Choice[1].setText("Narendra Modi");
+                Answer_Choice[2].setText("Jawharlal Nehru");
+                Answer_Choice[3].setText("Indira Gandhi");
+                Answer_Choice[4].setText("Manmohan Singh");
                 break;
             case 1:
-                Question_Section.setText("Qn 2: Total Numbe of Primitive Data Types in JAVA :");
-                Collection_Button[1].setText("6");
-                Collection_Button[2].setText("7");
-                Collection_Button[3].setText("8");
-                Collection_Button[4].setText("9");
+                Question_Choice.setText("Qn 2: What is the Capital of USA :");
+                Answer_Choice[1].setText("New York");
+                Answer_Choice[2].setText("Washington DC");
+                Answer_Choice[3].setText("California");
+                Answer_Choice[4].setText("Florida");
                 break;
             case 2:
-                Question_Section.setText("Qn 3: Where is Actual \'System\'' Class Defined :");
-                Collection_Button[1].setText("java.lang.package");
-                Collection_Button[2].setText("java.util.package");
-                Collection_Button[3].setText("java.lo.package");
-                Collection_Button[4].setText("java.utils.package");
+                Question_Choice.setText("Qn 3: In which year the First Battle of Panipat took place :");
+                Answer_Choice[1].setText("1757");
+                Answer_Choice[2].setText("1556");
+                Answer_Choice[3].setText("1526");
+                Answer_Choice[4].setText("1947");
                 break;
             case 3:
-                Question_Section.setText("Qn 4: Expected Created By Try-Catch Block is Caught in Which Block :");
-                Collection_Button[1].setText("Catch");
-                Collection_Button[2].setText("Throws");
-                Collection_Button[3].setText("Final");
-                Collection_Button[4].setText("Thrown");
+                Question_Choice.setText("Qn 4: What is the Symbol of Sodium :");
+                Answer_Choice[1].setText("Na");
+                Answer_Choice[2].setText("K");
+                Answer_Choice[3].setText("Ca");
+                Answer_Choice[4].setText("So");
                 break;
             case 4:
-                Question_Section.setText("Qn 5: Which of The Following  is Not an OOPS Concept in JAVA :");
-                Collection_Button[1].setText("POLYMORPHISM");
-                Collection_Button[2].setText("INHERITANCE");
-                Collection_Button[3].setText("Compilation");
-                Collection_Button[4].setText("ENCAPSULATION");
+                Question_Choice.setText("Qn 5: Who discovered the Laws of Motion :");
+                Answer_Choice[1].setText("Nikola Tesla");
+                Answer_Choice[2].setText("Charles Babbage");
+                Answer_Choice[3].setText("Isaac Newton");
+                Answer_Choice[4].setText("Jagadish Chandra Bose");
                 break;
             case 5:
-                Question_Section.setText("Qn 6: Identify The Infinite LOOP among The Following :");
-                Collection_Button[1].setText("for ( ; ; )");
-                Collection_Button[2].setText("for()i=0 ; i<10 ; i++");
-                Collection_Button[3].setText("for(i=0 ; i<10 ; i++)");
-                Collection_Button[4].setText("for(int=0 ; i++)");
+                Question_Choice.setText("Qn 6: Where is the Victoria Memorial located :");
+                Answer_Choice[1].setText("Mumbai");
+                Answer_Choice[2].setText("Shimla");
+                Answer_Choice[3].setText("Delhi");
+                Answer_Choice[4].setText("Kolkata");
                 break;
             case 6:
-                Question_Section.setText("Qn 7: When is Finalize() Method Called :");
-                Collection_Button[1].setText("Before GarBage Collection");
-                Collection_Button[2].setText("Before an Object goes out of Scope");
-                Collection_Button[3].setText("When Variable Goes out of Scope");
-                Collection_Button[4].setText("None");
+                Question_Choice.setText("Qn 7: Who fought for implementing Widow Remarriage Act :");
+                Answer_Choice[1].setText("Dayanand Saraswati");
+                Answer_Choice[2].setText("Iswarchandra Vidyasagar");
+                Answer_Choice[3].setText("Mother Teressa");
+                Answer_Choice[4].setText("Lala Lajpat Rai");
                 break;
             case 7:
-                Question_Section.setText("Qn 8: What is Implicit return Type of Constructor :");
-                Collection_Button[1].setText("No Return Type");
-                Collection_Button[2].setText("A Class Object in which it is Defined");
-                Collection_Button[3].setText("void");
-                Collection_Button[4].setText("All of The Above");
+                Question_Choice.setText("Qn 8: Under whose leadership India won World Cup in 2011 :");
+                Answer_Choice[1].setText("Sourav Ganguly");
+                Answer_Choice[2].setText("Virat Kohli");
+                Answer_Choice[3].setText("Rohit Sharma");
+                Answer_Choice[4].setText("MS Dhoni");
                 break;
             case 8:
-                Question_Section.setText("Qn 9: Class at the Top of Exception Class is Known as :");
-                Collection_Button[1].setText("AritmeticException");
-                Collection_Button[2].setText("Throwable");
-                Collection_Button[3].setText("Object");
-                Collection_Button[4].setText("Console");
+                Question_Choice.setText("Qn 9: Which is the first film of Amitabh Bachchan :");
+                Answer_Choice[1].setText("Sholay");
+                Answer_Choice[2].setText("Deewar");
+                Answer_Choice[3].setText("Saat Hindustani");
+                Answer_Choice[4].setText("Don");
                 break;
             case 9:
-                Question_Section.setText(
-                        "Qn 10: Which Provides Runtime Environment For JAVA Byte Code to be Executed on Machine :");
-                Collection_Button[1].setText("JDK");
-                Collection_Button[2].setText("JVM");
-                Collection_Button[3].setText("JRE");
-                Collection_Button[4].setText("JAVAC");
+                Question_Choice.setText(
+                        "Qn 10: Which place is famous for Biriyani :");
+                Answer_Choice[1].setText("Chennai");
+                Answer_Choice[2].setText("Amritsar");
+                Answer_Choice[3].setText("Hyderabad");
+                Answer_Choice[4].setText("Ahmedabad");
                 break;
 
             default:
                 break;
         }
 
-        Question_Section.setBounds(30, 40, 450, 20);
+        Question_Choice.setBounds(30, 40, 450, 20);
     }
 
     boolean Authenticate_Answer() {
-        switch (Current_Question) {
+        switch (Present_Question) {
             case 0:
-                return (Collection_Button[2].isSelected());
+                return (Answer_Choice[2].isSelected());
             case 1:
-                return (Collection_Button[2].isSelected());
+                return (Answer_Choice[2].isSelected());
             case 2:
-                return (Collection_Button[3].isSelected());
+                return (Answer_Choice[3].isSelected());
             case 3:
-                return (Collection_Button[1].isSelected());
+                return (Answer_Choice[1].isSelected());
             case 4:
-                return (Collection_Button[3].isSelected());
+                return (Answer_Choice[3].isSelected());
             case 5:
-                return (Collection_Button[4].isSelected());
+                return (Answer_Choice[4].isSelected());
             case 6:
-                return (Collection_Button[2].isSelected());
+                return (Answer_Choice[2].isSelected());
             case 7:
-                return (Collection_Button[4].isSelected());
+                return (Answer_Choice[4].isSelected());
             case 8:
-                return (Collection_Button[3].isSelected());
+                return (Answer_Choice[3].isSelected());
             case 9:
-                return (Collection_Button[3].isSelected());
+                return (Answer_Choice[3].isSelected());
 
             default:
                 return false;
         }
     }
 }
+

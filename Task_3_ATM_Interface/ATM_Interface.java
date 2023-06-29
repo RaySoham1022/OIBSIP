@@ -54,9 +54,9 @@ class Account {
     public void deposit(double amount) {
         balance += amount;
         String date = java.time.LocalDate.now().toString();
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
         transactions.add(new Transaction("Deposit", amount, date));
-        System.out.println("Deposit successful. Current balance: " + balance);
+        System.out.println("Deposit Completed. Your Current balance: " + balance);
         System.out.println("---------------------------------------------");
     }
 
@@ -65,13 +65,13 @@ class Account {
             balance -= amount;
             String date = java.time.LocalDate.now().toString();
             transactions.add(new Transaction("Withdrawal", amount, date));
-            System.out.println("---------------------------------------------");
-            System.out.println("Withdrawal successful. Current balance: " + balance);
-            System.out.println("---------------------------------------------");
+            System.out.println("*********************************************");
+            System.out.println("Withdrawal Completed. Your Current balance: " + balance);
+            System.out.println("*********************************************");
         } else {
-            System.out.println("---------------------------------------------");
-            System.out.println("Insufficient balance.");
-            System.out.println("---------------------------------------------");
+            System.out.println("*********************************************");
+            System.out.println("Your Balance is Insufficient");
+            System.out.println("*********************************************");
         }
     }
 
@@ -80,25 +80,25 @@ class Account {
             balance -= amount;
             recipient.balance += amount;
             String date = java.time.LocalDate.now().toString();
-            System.out.println("---------------------------------------------");
+            System.out.println("*********************************************");
             transactions.add(new Transaction("Transfer to " + recipient.getUserId(), amount, date));
             recipient.transactions.add(new Transaction("Transfer from " + getUserId(), amount, date));
-            System.out.println("Transfer successful. Current balance: " + balance);
-            System.out.println("---------------------------------------------");
+            System.out.println("Transfer Completed. Your Current balance: " + balance);
+            System.out.println("*********************************************");
         } else {
-            System.out.println("Insufficient balance.");
+            System.out.println("Your Balance is Insufficient");
         }
     }
 
     public void showTransactionHistory() {
         System.out.println("Transaction History:");
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
         for (Transaction transaction : transactions) {
             System.out.println("Type: " + transaction.getType() +
                     ", Amount: " + transaction.getAmount() +
                     ", Date: " + transaction.getDate());
         }
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
     }
 }
 
@@ -118,13 +118,13 @@ public class ATM_Interface {
     }
 
     private static void login() {
-        System.out.println("---------------------------------------------");
-        System.out.println("Welcome to the ATM system!");
-        System.out.print("Enter user ID: ");
+        System.out.println("*********************************************");
+        System.out.println("Welcome to the ATM !! ");
+        System.out.print("Enter Your USER ID: ");
         String userId = scanner.nextLine();
-        System.out.print("Enter user PIN: ");
+        System.out.print("Enter user PIN : ");
         String userPin = scanner.nextLine();
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
 
         // Authenticate user
         // In a real-world scenario, this would involve querying a database to validate
@@ -132,17 +132,17 @@ public class ATM_Interface {
         // For simplicity, we are using hard-coded credentials here
         if (userId.equals("SOHAMRAY") && userPin.equals("123456")) {
             currentAccount = new Account(userId, userPin, 81000);
-            System.out.println("---------------------------------------------");
+            System.out.println("*********************************************");
             System.out.println("Login successful!");
             System.out.println("Welcome Soham Ray ");
         } else if (userId.equals("OasisInfobyte") && userPin.equals("987654")) {
             currentAccount = new Account(userId, userPin, 35000);
             System.out.println("Login successful!");
             System.out.println("Welcome Oasis Infobyte ");
-            System.out.println("---------------------------------------------");
+            System.out.println("*********************************************");
         } else {
             System.out.println("Invalid credentials. Login failed.");
-            System.out.println("---------------------------------------------");
+            System.out.println("*********************************************");
         }
     }
 
@@ -150,15 +150,15 @@ public class ATM_Interface {
         boolean quit = false;
 
         while (!quit) {
-            System.out.println("\n--- ATM Menu ---");
-            System.out.println("1. Check Balance");
-            System.out.println("2. Make a Withdrawal");
-            System.out.println("3. Make a Deposit");
-            System.out.println("4. Make a Transfer");
-            System.out.println("5. Transaction History");
-            System.out.println("6. Quit");
-            System.out.println("---------------------------------------------");
-            System.out.print("Enter your choice: ");
+            System.out.println("\n--- ATM  ---");
+            System.out.println("Press 1 to Check Balance");
+            System.out.println("Press 2 to Make a Withdrawal");
+            System.out.println("Press 3 to Make a Deposit");
+            System.out.println("Press 4 to Make a Transfer");
+            System.out.println("Press 5 to See Transaction History");
+            System.out.println("Press 6 to Quit");
+            System.out.println("*********************************************");
+            System.out.print("Enter Your Choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume the newline character
 
@@ -185,43 +185,43 @@ public class ATM_Interface {
                     System.out.println("Invalid choice. Please try again.");
             }
         }
-        System.out.println("---------------------------------------------");
-        System.out.println("Thank you for using the ATM system. Goodbye!");
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
+        System.out.println("Thank you for using the ATM. Have a Nice Day");
+        System.out.println("*********************************************");
     }
 
     private static void checkBalance() {
         double balance = currentAccount.getBalance();
         System.out.println("Current balance: " + balance);
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
     }
 
     private static void makeWithdrawal() {
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
         System.out.print("Enter withdrawal amount: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // Consume the newline character
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
         currentAccount.withdraw(amount);
     }
 
     private static void makeDeposit() {
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
         System.out.print("Enter deposit amount: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // Consume the newline character
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
         currentAccount.deposit(amount);
     }
 
     private static void makeTransfer() {
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
         System.out.print("Enter recipient's user ID: ");
         String recipientId = scanner.nextLine();
         System.out.print("Enter transfer amount: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // Consume the newline character
-        System.out.println("---------------------------------------------");
+        System.out.println("*********************************************");
 
         Account recipient = new Account(recipientId, "", 0);
         currentAccount.transfer(recipient, amount);
