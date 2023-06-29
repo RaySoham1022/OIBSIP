@@ -6,7 +6,7 @@ You have to guess a number between 1 to 1000, the program will assist you whethe
 
 Task 3 - ATM Interface
 In the ATM, you can Withdraw, Deposit, Transfer Money or check the Balance and Transaction History. Here only two Users are available. Try with -- 
-USER ID : SOHAMRAY        PIN : 123456
+USER ID : SOHAMRAY        PIN : 123456, 
 USER ID : OasisInfobyte   PIN : 987654
 
 Task 4 - Online Exam
